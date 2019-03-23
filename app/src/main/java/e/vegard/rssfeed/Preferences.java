@@ -21,16 +21,17 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
     // init the different elements that will be needed
     private Button btnSave;
     private EditText urlLink;
-    private EditText rssAmount;
+    private Spinner rssAmount;
     private Spinner rssFrequency;
 
     // constants for different purposes
     public final static String URL = "URL";
     private final static String[] FREQUENCY_LIST = {"10min", "60min", "once a day"};
+    private final static String[] AMOUNT_LIST = {"10, 20, 50, 100"};
 
     // values to keep data
     private int frequency;
-
+    private int amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,6 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
 
         // textviews from preference activity
         urlLink = findViewById(R.id.rssInput);
-        rssAmount = findViewById(R.id.rssAmount);
 
         // buttons in this activity
         btnSave = findViewById(R.id.btn_save);
@@ -53,6 +53,10 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
         rssFrequency.setAdapter(adapter);
         rssFrequency.setOnItemSelectedListener(this);
 
+        // Deal with amount spinner add items to drop menu
+        rssAmount = findViewById(R.id.rssAmount);
+        rssAmount.setAdapter(adapter);
+        rssAmount.setOnItemSelectedListener(this);
 
         //when twe change the text
         urlLink.addTextChangedListener(new TextWatcher() {
@@ -72,6 +76,8 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
                     Toast.makeText(Preferences.this, urlLink.getText().toString(), Toast.LENGTH_LONG);
                     SharedPreferences.Editor editor = getSharedPreferences(URL, MODE_PRIVATE).edit();
                     editor.putString("url", urlLink.getText().toString());
+                    editor.putInt("frequency", frequency);
+                    editor.putInt("amount", amount);
                     editor.apply();
                 }
             }
@@ -89,25 +95,50 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        switch (position) {
-            case 0:
-                // this is 10 min we will set an int to 10
-                frequency = 10;
-                break;
+        Spinner dropdown = (Spinner)parent;
 
-            case 1:
-                // this is 1 hour we will set int to 60
-                frequency = 60;
-                break;
+        if (dropdown.getId() == R.id.rssDropdown) {
+            switch (position) {
+                case 0:
+                    // this is 10 min we will set an int to 10
+                    frequency = 10;
+                    break;
 
-            case 2:
-                // this is 1 day we will set int to 1440
-                frequency = 1440;
-                break;
+                case 1:
+                    // this is 1 hour we will set int to 60
+                    frequency = 60;
+                    break;
 
-            default:
-                frequency = 0;
-                break;
+                case 2:
+                    // this is 1 day we will set int to 1440
+                    frequency = 1440;
+                    break;
+
+                default:
+                    frequency = 0;
+                    break;
+            }
+        } else {
+            switch (position) {
+                case 0:
+                    //amount is 10 news
+                    amount = 10;
+                    break;
+
+                case 1:
+                    //amount is 20 news
+                    amount = 20;
+                    break;
+
+                case 2:
+                    //amount is 50 news
+                    amount = 50;
+                    break;
+                case 3:
+                    //amount is 100 news
+                    amount = 100;
+                    break;
+            }
         }
     }
 
