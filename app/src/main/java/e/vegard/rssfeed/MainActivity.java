@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        mPreferenceButton = (Button) findViewById(R.id.btn_preference);
-        mNewsButton = (Button) findViewById(R.id.btn_newsList);
+        // referencing the buttons to the ui elements
+        mPreferenceButton = findViewById(R.id.btn_preference);
+        mNewsButton = findViewById(R.id.btn_newsList);
 
 
         mPreferenceButton.setOnClickListener(new View.OnClickListener() {
