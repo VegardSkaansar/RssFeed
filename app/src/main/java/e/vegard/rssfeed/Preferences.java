@@ -27,7 +27,7 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
     // constants for different purposes
     public final static String URL = "URL";
     private final static String[] FREQUENCY_LIST = {"10min", "60min", "once a day"};
-    private final static String[] AMOUNT_LIST = {"10, 20, 50, 100"};
+    private final static String[] AMOUNT_LIST = {"10", "20", "50", "100"};
 
     // values to keep data
     private int frequency;
