@@ -55,7 +55,11 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
 
         // Deal with amount spinner add items to drop menu
         rssAmount = findViewById(R.id.rssAmount);
-        rssAmount.setAdapter(adapter);
+        ArrayAdapter<String>adapter2 = new ArrayAdapter<String>(Preferences.this,
+                android.R.layout.simple_spinner_item,AMOUNT_LIST);
+
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        rssAmount.setAdapter(adapter2);
         rssAmount.setOnItemSelectedListener(this);
 
         //when twe change the text
