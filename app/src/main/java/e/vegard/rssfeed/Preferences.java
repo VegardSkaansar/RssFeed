@@ -149,6 +149,7 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
+        amount = 0;
+        frequency = 0;
     }
 }
