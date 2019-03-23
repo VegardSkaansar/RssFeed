@@ -90,14 +90,20 @@ public class MainActivity extends AppCompatActivity {
         String img = null;
         boolean isItem = false;
         ArrayList<RssFeedModel> items = new ArrayList<>();
+        int amount;
 
         try {
             XmlPullParser xmlPullParser = Xml.newPullParser();
             xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             xmlPullParser.setInput(inputStream, null);
 
+            SharedPreferences rssURL;
+            rssURL = getSharedPreferences(Preferences.URL, MODE_PRIVATE);
+            amount = rssURL.getInt("amount", 0);
+            Log.d(TAG, "" + amount);
+
             xmlPullParser.nextTag();
-            while (xmlPullParser.next() != XmlPullParser.END_DOCUMENT) {
+            while (xmlPullParser.next() != XmlPullParser.END_DOCUMENT && amount > 0) {
                 int eventType = xmlPullParser.getEventType();
 
                 String name = xmlPullParser.getName();
@@ -142,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     if(isItem) {
                         RssFeedModel item = new RssFeedModel(title, link, description, img);
                         items.add(item);
+                        amount--;
                     }
                     else {
                         mFeedTitle = title;
@@ -166,8 +173,6 @@ public class MainActivity extends AppCompatActivity {
     private class FetchFeedTask extends AsyncTask<Void, Void, Boolean> {
 
         private String urlLink;
-        private int amount;
-        private  int frequency;
         private Context context;
 
         private FetchFeedTask(Context context) {
@@ -184,8 +189,6 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences rssURL;
             rssURL = getSharedPreferences(Preferences.URL, MODE_PRIVATE);
             urlLink = rssURL.getString("url", "");
-            amount = rssURL.getInt("amount", 0);
-            frequency = rssURL.getInt("frequency", 0);
         }
 
         @Override
