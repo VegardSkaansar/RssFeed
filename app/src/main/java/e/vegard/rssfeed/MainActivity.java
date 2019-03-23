@@ -1,36 +1,32 @@
 package e.vegard.rssfeed;
 
-import android.app.IntentService;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
+
 import java.net.URL;
 import java.util.ArrayList;
 
-import java.util.List;
-
-import e.vegard.rssfeed.R;
-import e.vegard.rssfeed.RssFeedListAdapter;
-import e.vegard.rssfeed.RssFeedModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,12 +51,15 @@ public class MainActivity extends AppCompatActivity {
         mPreferenceButton = findViewById(R.id.btn_preference);
         mNewsButton = findViewById(R.id.btn_newsList);
 
-
+        // here we will send to the next activity
         mPreferenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, Preferences.class);
                 startActivity(i);
+                if (getSharedPreferences(Preferences.URL, MODE_PRIVATE).contains("url")) {
+                    mNewsButton.setEnabled(true);
+                }
 
             }
         });
@@ -70,6 +69,12 @@ public class MainActivity extends AppCompatActivity {
                FetchTheURL();
             }
         });
+
+        //if no link is provided in the sharedPreference
+        //the button for news will be disabled
+        if (!getSharedPreferences(Preferences.URL, MODE_PRIVATE).contains("url")) {
+            mNewsButton.setEnabled(false);
+        }
 
     }
 
@@ -181,12 +186,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            if (TextUtils.isEmpty(urlLink))
+            if (TextUtils.isEmpty(urlLink)) {
                 return false;
-
+            }
             try {
                 if(!urlLink.startsWith("http://") && !urlLink.startsWith("https://"))
-                    urlLink = "http://" + urlLink;
+                    urlLink = "https://" + urlLink;
 
                 URL url = new URL(urlLink);
                 InputStream inputStream = url.openConnection().getInputStream();
@@ -207,10 +212,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(MainActivity.this, NewsList.class);
                 i.putExtra("listOfRss", mFeedModelList);
                 startActivity(i);
+
             } else {
                 Toast.makeText(MainActivity.this,
                         "Enter a valid Rss feed url",
                         Toast.LENGTH_LONG).show();
+
             }
         }
     }
