@@ -166,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
     private class FetchFeedTask extends AsyncTask<Void, Void, Boolean> {
 
         private String urlLink;
+        private int amount;
+        private  int frequency;
         private Context context;
 
         private FetchFeedTask(Context context) {
@@ -182,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences rssURL;
             rssURL = getSharedPreferences(Preferences.URL, MODE_PRIVATE);
             urlLink = rssURL.getString("url", "");
+            amount = rssURL.getInt("amount", 0);
+            frequency = rssURL.getInt("frequency", 0);
         }
 
         @Override
