@@ -21,7 +21,7 @@ public class Preferences extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
-        // new sharedpreference
+        // we will get the shared
 
         // buttons in this activity
         final Button btnSave = findViewById(R.id.btn_save);
