@@ -26,6 +26,8 @@ import java.io.InputStream;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,11 +38,14 @@ public class MainActivity extends AppCompatActivity {
     private Button mNewsButton;
 
     public static ArrayList<RssFeedModel> mFeedModelList;
+    private Timer timer;
+    private TimerTask freq;
+
     private String mFeedTitle;
-    private String mFeedLink;
     private String mFeedDescription;
+    private String mFeedLink;
 
-
+    private boolean ok;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +71,20 @@ public class MainActivity extends AppCompatActivity {
         mNewsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               FetchTheURL();
+                // the ok boolean helps us check if it was a scheduled
+                // or a button press that fetched the rssfeed
+                    ok = true;
+                    timer = new Timer();
+                    freq = new TimerTask() {
+                        @Override
+                        public void run() {
+                            FetchTheURL();
+                        }
+                    };
+
+                    // we are setting this timer 60000 is the same as 1 min key values contains values as min
+                timer.schedule(freq,1 , getSharedPreferences(Preferences.URL, MODE_PRIVATE).getInt("frequency", 0)*60000);
+
             }
         });
 
@@ -216,9 +234,13 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
 
             if (success) {
-                Intent i = new Intent(MainActivity.this, NewsList.class);
-                i.putExtra("listOfRss", mFeedModelList);
-                startActivity(i);
+                if (ok) {
+                    Intent i = new Intent(MainActivity.this, NewsList.class);
+                    i.putExtra("listOfRss", mFeedModelList);
+                    startActivity(i);
+                    ok = false;
+                }
+
 
             } else {
                 Toast.makeText(MainActivity.this,
