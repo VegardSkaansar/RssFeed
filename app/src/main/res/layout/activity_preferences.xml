@@ -74,23 +74,21 @@
         app:layout_constraintTop_toBottomOf="@+id/rssTxt"
         app:layout_constraintVertical_bias="0.081" />
 
-    <EditText
+    <Spinner
         android:id="@+id/rssAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="@+id/rssTxtAmount"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.332" />
+        app:layout_constraintVertical_bias="0.317" />
 
     <TextView
         android:id="@+id/rssTxtFrequency"
@@ -123,6 +121,6 @@
         app:layout_constraintHorizontal_bias="0.135"
         app:layout_constraintStart_toEndOf="@+id/rssTxtFrequency"
         app:layout_constraintTop_toBottomOf="@+id/rssAmount"
-        app:layout_constraintVertical_bias="0.085" />
+        app:layout_constraintVertical_bias="0.105" />
 
 </android.support.constraint.ConstraintLayout>
