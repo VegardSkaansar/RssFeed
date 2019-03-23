@@ -138,6 +138,11 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
                     //amount is 100 news
                     amount = 100;
                     break;
+
+                default:
+                    //amount is 0 here
+                    amount = 0;
+                    break;
             }
         }
     }
