@@ -65,9 +65,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, Preferences.class);
                 startActivity(i);
-                if (getSharedPreferences(Preferences.URL, MODE_PRIVATE).contains("url")) {
                     mNewsButton.setEnabled(true);
-                }
+
 
             }
         });
