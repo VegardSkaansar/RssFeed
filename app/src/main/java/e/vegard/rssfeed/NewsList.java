@@ -22,7 +22,7 @@ public class NewsList extends AppCompatActivity implements RssFeedListAdapter.On
 
     private RecyclerView mRecyclerView;
     private EditText mSearch;
-    private ArrayList<RssFeedModel> Mlist;
+    public static ArrayList<RssFeedModel> Mlist;
     private final String TAG = "Somekeyfortestimg";
 
     @Override
@@ -45,7 +45,7 @@ public class NewsList extends AppCompatActivity implements RssFeedListAdapter.On
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterList(mSearch.getText().toString());
+                doFilter();
             }
 
             @Override
@@ -62,7 +62,7 @@ public class NewsList extends AppCompatActivity implements RssFeedListAdapter.On
         startActivity(i);
     }
 
-    public void filterList(String userInput) {
+    public ArrayList<RssFeedModel> filterList(String userInput) {
         if (!userInput.matches("")) {
             ArrayList<RssFeedModel> tmp = new ArrayList<RssFeedModel>();
             Pattern p = Pattern.compile("[A-Z]+");
@@ -72,14 +72,19 @@ public class NewsList extends AppCompatActivity implements RssFeedListAdapter.On
                 for (int i = 0; i < Mlist.size(); i++) {
                     if (Mlist.get(i).title.toUpperCase().contains(m.group())) {
                         tmp.add(Mlist.get(i));
-                        Log.d(TAG, Mlist.get(i).title);
                     }
                 }
             }
-            mRecyclerView.setAdapter(new RssFeedListAdapter(tmp, this));
+            //mRecyclerView.setAdapter(new RssFeedListAdapter(tmp, this));
+            return tmp;
         } else {
-            mRecyclerView.setAdapter(new RssFeedListAdapter(Mlist, this));
+            return Mlist;
+            //mRecyclerView.setAdapter(new RssFeedListAdapter(Mlist, this));
         }
+    }
+
+    public void doFilter() {
+        mRecyclerView.setAdapter(new RssFeedListAdapter(filterList(mSearch.getText().toString()), this));
     }
 
 

@@ -101,24 +101,18 @@ public class MainActivity extends AppCompatActivity {
        new FetchFeedTask(MainActivity.this).execute((Void) null);
     }
 
-    public ArrayList<RssFeedModel> parseFeed(InputStream inputStream) throws XmlPullParserException, IOException {
+    public ArrayList<RssFeedModel> parseFeed(InputStream inputStream, int amount) throws XmlPullParserException, IOException {
         String title = null;
         String link = null;
         String description = null;
         String img = null;
         boolean isItem = false;
         ArrayList<RssFeedModel> items = new ArrayList<>();
-        int amount;
 
         try {
             XmlPullParser xmlPullParser = Xml.newPullParser();
             xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             xmlPullParser.setInput(inputStream, null);
-
-            SharedPreferences rssURL;
-            rssURL = getSharedPreferences(Preferences.URL, MODE_PRIVATE);
-            amount = rssURL.getInt("amount", 0);
-            Log.d(TAG, "" + amount);
 
             xmlPullParser.nextTag();
             while (xmlPullParser.next() != XmlPullParser.END_DOCUMENT && amount > 0) {
@@ -220,7 +214,11 @@ public class MainActivity extends AppCompatActivity {
 
                 URL url = new URL(urlLink);
                 InputStream inputStream = url.openConnection().getInputStream();
-                mFeedModelList = parseFeed(inputStream);
+                SharedPreferences rssURL;
+                rssURL = getSharedPreferences(Preferences.URL, MODE_PRIVATE);
+                int amount = rssURL.getInt("amount", 0);
+                Log.d(TAG, "" + amount);
+                mFeedModelList = parseFeed(inputStream, amount);
                 return true;
             } catch (IOException e) {
                 Log.e(TAG, "Error", e);
