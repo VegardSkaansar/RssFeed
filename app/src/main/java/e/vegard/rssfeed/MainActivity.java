@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private String mFeedLink;
 
     private boolean ok;
+    private boolean firstTimeFetch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         // referencing the buttons to the ui elements
         mPreferenceButton = findViewById(R.id.btn_preference);
         mNewsButton = findViewById(R.id.btn_newsList);
+
+        firstTimeFetch = true;
 
         // here we will send to the next activity
         mPreferenceButton.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // the ok boolean helps us check if it was a scheduled
                 // or a button press that fetched the rssfeed
+                if (firstTimeFetch) {
                     ok = true;
+                    firstTimeFetch = false;
                     timer = new Timer();
                     freq = new TimerTask() {
                         @Override
@@ -83,7 +88,12 @@ public class MainActivity extends AppCompatActivity {
                     };
 
                     // we are setting this timer 60000 is the same as 1 min key values contains values as min
-                timer.schedule(freq,1 , getSharedPreferences(Preferences.URL, MODE_PRIVATE).getInt("frequency", 0)*60000);
+                    timer.schedule(freq, 1, getSharedPreferences(Preferences.URL, MODE_PRIVATE).getInt("frequency", 0) * 60000);
+                } else {
+                    Intent i = new Intent(MainActivity.this, NewsList.class);
+                    i.putExtra("listOfRss", mFeedModelList);
+                    startActivity(i);
+                }
 
             }
         });
