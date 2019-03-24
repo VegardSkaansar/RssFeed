@@ -40,6 +40,9 @@ public class Preferences extends AppCompatActivity implements AdapterView.OnItem
 
         // textviews from preference activity
         urlLink = findViewById(R.id.rssInput);
+        if (getSharedPreferences(Preferences.URL, MODE_PRIVATE).contains("url")) {
+            urlLink.setText(getSharedPreferences(Preferences.URL, MODE_PRIVATE).getString("url", ""));
+        }
 
         // buttons in this activity
         btnSave = findViewById(R.id.btn_save);
