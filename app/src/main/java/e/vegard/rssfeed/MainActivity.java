@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "chr: " + img);
                 }
 
-                if (title != null && link != null && description != null) {
+                if (title != null && link != null && description != null && img != null) {
                     if(isItem) {
                         RssFeedModel item = new RssFeedModel(title, link, description, img);
                         items.add(item);
