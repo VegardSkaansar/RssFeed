@@ -42,4 +42,6 @@ public class NewsList extends AppCompatActivity implements RssFeedListAdapter.On
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(Mlist.get(position).link));
         startActivity(i);
     }
+
+
 }
